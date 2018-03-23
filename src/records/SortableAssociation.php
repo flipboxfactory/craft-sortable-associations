@@ -8,6 +8,7 @@
 
 namespace flipbox\craft\sortable\associations\records;
 
+use flipbox\craft\sortable\associations\services\SortableAssociations;
 use flipbox\ember\helpers\ModelHelper;
 use flipbox\ember\records\ActiveRecord;
 
@@ -26,6 +27,33 @@ abstract class SortableAssociation extends ActiveRecord implements SortableAssoc
      * @inheritdoc
      */
     const SOURCE_ATTRIBUTE = '';
+
+    /**
+     * @return SortableAssociations
+     */
+    abstract protected function associationService(): SortableAssociations;
+
+    /**
+     * @inheritdoc
+     */
+    public function associate(bool $autoReorder = true): bool
+    {
+        return $this->associationService()->associate(
+            $this,
+            $autoReorder
+        );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function dissociate(bool $autoReorder = true): bool
+    {
+        return $this->associationService()->dissociate(
+            $this,
+            $autoReorder
+        );
+    }
 
     /**
      * @return array
