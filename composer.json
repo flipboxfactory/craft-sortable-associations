@@ -1,6 +1,6 @@
 {
   "name": "flipboxfactory/craft-sortable-associations",
-  "version": "1.0.0-rc",
+  "version": "1.0.0-rc.1",
   "description": "Simple Craft CMS source-target relationships",
   "keywords": [
     "craft cms",
@@ -37,11 +37,5 @@
     "branch-alias": {
       "dev-master": "1.0.x-dev"
     }
-  },
-  "repositories": [
-    {
-      "type": "composer",
-      "url": "https://packagist.org"
-    }
-  ]
+  }
 }
