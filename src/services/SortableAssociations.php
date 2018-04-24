@@ -23,19 +23,21 @@ use yii\db\ActiveRecord;
 abstract class SortableAssociations extends Component
 {
     /**
-     * @return string
-     */
-    const TABLE_ALIAS = '';
-
-    /**
+     * The source attribute name
      * @return string
      */
     const SOURCE_ATTRIBUTE = '';
 
     /**
+     * The source attribute name
      * @return string
      */
     const TARGET_ATTRIBUTE = '';
+
+    /**
+     * @return string
+     */
+    abstract protected static function tableAlias(): string;
 
     /**
      * @param array $config
@@ -337,7 +339,7 @@ abstract class SortableAssociations extends Component
         foreach ($sortOrder as $target => $order) {
             Craft::$app->getDb()->createCommand()
                 ->update(
-                    '{{%' . static::TABLE_ALIAS . '}}',
+                    '{{%' . $this->tableAlias() . '}}',
                     ['sortOrder' => $order],
                     array_merge(
                         $condition,

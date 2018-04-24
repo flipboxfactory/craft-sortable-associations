@@ -27,18 +27,20 @@ abstract class SortableFields extends Component
 {
     /**
      * The source attribute name
+     * @return string
      */
     const SOURCE_ATTRIBUTE = '';
 
     /**
      * The target attribute name
+     * @return string
      */
     const TARGET_ATTRIBUTE = '';
 
     /**
-     * The table alias
+     * @return string
      */
-    const TABLE_ALIAS = '';
+    abstract protected static function tableAlias(): string;
 
     /**
      * @param FieldInterface $field
@@ -125,8 +127,8 @@ abstract class SortableFields extends Component
         ElementQuery $query,
         $value
     ) {
-        $alias = static::TABLE_ALIAS;
-        $name = '{{%' . static::TABLE_ALIAS . '}}';
+        $alias = $this->tableAlias();
+        $name = '{{%' . $this->tableAlias() . '}}';
 
         $joinTable = "{$name} {$alias}";
         $query->query->innerJoin($joinTable, "[[{$alias}." . static::SOURCE_ATTRIBUTE . "]] = [[subquery.elementsId]]");
@@ -157,8 +159,8 @@ abstract class SortableFields extends Component
         $query->subQuery->andWhere(
             $this->emptyValueSubSelect(
                 $field,
-                static::TABLE_ALIAS,
-                '{{%' . static::TABLE_ALIAS . '}}',
+                $this->tableAlias(),
+                '{{%' . $this->tableAlias() . '}}',
                 $operator
             )
         );
