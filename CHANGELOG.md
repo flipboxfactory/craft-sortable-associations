@@ -1,7 +1,7 @@
 # Changelog
 All Notable changes to `flipboxdigital\craft-sortable-associations` will be documented in this file
 
-## Unreleased
+## 1.0.0 - 2018-04-23
 ### Changed
 - `SortableAssociations` service no longer uses a constant to identify the record alias.
 - `SortableFields` service no longer uses a constant to identify the record alias.
