@@ -1,6 +1,6 @@
 {
   "name": "flipboxfactory/craft-sortable-associations",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0",
   "description": "Simple Craft CMS source-target relationships",
   "keywords": [
     "craft cms",
@@ -16,8 +16,8 @@
   ],
   "require": {
     "php": ">=7.0",
-    "craftcms/cms": "~3.0.0.RC",
-    "flipboxfactory/craft-ember": "~1.0.0.rc"
+    "craftcms/cms": "~3.0.0",
+    "flipboxfactory/craft-ember": "~1.0.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^5.0",
