@@ -116,10 +116,10 @@ abstract class SortableAssociations extends Component
         }
 
         if ($reOrder === true) {
-            $this->applySortOrder($record);
+            return $this->applySortOrder($record);
         }
 
-        return $record->save();
+        return true;
     }
 
     /**
