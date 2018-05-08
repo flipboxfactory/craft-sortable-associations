@@ -1,7 +1,7 @@
 # Changelog
 All Notable changes to `flipboxdigital\craft-sortable-associations` will be documented in this file
 
-##Unreleased
+## 1.0.1 - 2018-05-07
 ### Fixed
 - Saving an association record may trigger the save operation twice.
 
