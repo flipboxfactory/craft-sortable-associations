@@ -28,6 +28,11 @@ abstract class SortableAssociationQuery extends CacheableActiveQuery implements 
     const SORT_ORDER_ATTRIBUTE = 'sortOrder';
 
     /**
+     * The sort order direction
+     */
+    const SORT_ORDER_DIRECTION = SORT_ASC;
+
+    /**
      * @var bool Whether results should be returned in the order specified by [[domain]].
      */
     public $fixedOrder = false;
@@ -49,7 +54,7 @@ abstract class SortableAssociationQuery extends CacheableActiveQuery implements 
         }
 
         if ($this->orderBy === null && static::SORT_ORDER_ATTRIBUTE !== null) {
-            $this->orderBy = static::SORT_ORDER_ATTRIBUTE;
+            $this->orderBy = [static::SORT_ORDER_ATTRIBUTE => static::SORT_ORDER_DIRECTION];
         }
     }
 
