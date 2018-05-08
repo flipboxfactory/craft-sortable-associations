@@ -23,14 +23,14 @@ abstract class SortableAssociationQuery extends CacheableActiveQuery implements 
         FixedOrderBy;
 
     /**
+     * The sort order attribute
+     */
+    const SORT_ORDER_ATTRIBUTE = 'sortOrder';
+
+    /**
      * @var bool Whether results should be returned in the order specified by [[domain]].
      */
     public $fixedOrder = false;
-
-    /**
-     * @inheritdoc
-     */
-    public $orderBy = 'sortOrder';
 
     /**
      * @var int|null Sort order
@@ -46,6 +46,10 @@ abstract class SortableAssociationQuery extends CacheableActiveQuery implements 
 
         if ($this->select === null) {
             $this->select = ['*'];
+        }
+
+        if ($this->orderBy === null && static::SORT_ORDER_ATTRIBUTE !== null) {
+            $this->orderBy = static::SORT_ORDER_ATTRIBUTE;
         }
     }
 
@@ -75,7 +79,7 @@ abstract class SortableAssociationQuery extends CacheableActiveQuery implements 
     public function prepare($builder)
     {
         if ($this->sortOrder !== null) {
-            $this->andWhere(Db::parseParam('sortOrder', $this->sortOrder));
+            $this->andWhere(Db::parseParam(static::SORT_ORDER_ATTRIBUTE, $this->sortOrder));
         }
 
         $this->applyAuditAttributeConditions();

@@ -5,6 +5,9 @@ All Notable changes to `flipboxdigital\craft-sortable-associations` will be docu
 ### Fixed
 - Saving an association record may trigger the save operation twice.
 
+### Added
+- SortableAssociations service allows the 'sortOrder' attribute to defined via a constant
+
 ## 1.0.0 - 2018-04-23
 ### Changed
 - `SortableAssociations` service no longer uses a constant to identify the record alias.

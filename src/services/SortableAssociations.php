@@ -35,6 +35,12 @@ abstract class SortableAssociations extends Component
     const TARGET_ATTRIBUTE = '';
 
     /**
+     * The sort order attribute name
+     * @return string
+     */
+    const SORT_ORDER_ATTRIBUTE = 'sortOrder';
+
+    /**
      * @return string
      */
     abstract protected static function tableAlias(): string;
@@ -211,12 +217,12 @@ abstract class SortableAssociations extends Component
         SortableAssociationInterface $current,
         SortableAssociationInterface $existing = null
     ) {
-        if ($current->sortOrder !== null) {
+        if ($current->{static::SORT_ORDER_ATTRIBUTE} !== null) {
             return;
         }
 
-        $current->sortOrder = $existing ?
-            $existing->sortOrder :
+        $current->{static::SORT_ORDER_ATTRIBUTE} = $existing ?
+            $existing->{static::SORT_ORDER_ATTRIBUTE} :
             $this->nextSortOrder($current);
     }
 
@@ -230,8 +236,8 @@ abstract class SortableAssociations extends Component
     ): bool {
         $sortOrder = $this->sortOrder($record);
 
-        if (count($sortOrder) < $record->sortOrder) {
-            $record->sortOrder = count($sortOrder);
+        if (count($sortOrder) < $record->{static::SORT_ORDER_ATTRIBUTE}) {
+            $record->{static::SORT_ORDER_ATTRIBUTE} = count($sortOrder);
         }
 
         $order = $this->insertIntoOrder($record, $sortOrder);
@@ -256,10 +262,15 @@ abstract class SortableAssociations extends Component
         SortableAssociationInterface $record,
         array $sortOrder
     ) {
+
+        if($record->{static::SORT_ORDER_ATTRIBUTE} !== null) {
+            return true;
+        }
+
         $order = $this->insertSequential(
             $sortOrder,
             $record->{static::TARGET_ATTRIBUTE},
-            $record->sortOrder
+            $record->{static::SORT_ORDER_ATTRIBUTE} ?: 1
         );
 
         if ($order === false) {
@@ -305,7 +316,7 @@ abstract class SortableAssociations extends Component
     ): array {
         return $this->associationQuery($record)
             ->indexBy(static::TARGET_ATTRIBUTE)
-            ->select(['sortOrder'])
+            ->select([static::SORT_ORDER_ATTRIBUTE])
             ->column();
     }
 
@@ -317,7 +328,7 @@ abstract class SortableAssociations extends Component
         SortableAssociationInterface $record
     ): int {
         $maxSortOrder = $this->associationQuery($record)
-            ->max('[[sortOrder]]');
+            ->max(static::SORT_ORDER_ATTRIBUTE);
 
         return ++$maxSortOrder;
     }
@@ -340,7 +351,7 @@ abstract class SortableAssociations extends Component
             Craft::$app->getDb()->createCommand()
                 ->update(
                     '{{%' . $this->tableAlias() . '}}',
-                    ['sortOrder' => $order],
+                    [static::SORT_ORDER_ATTRIBUTE => $order],
                     array_merge(
                         $condition,
                         [
@@ -454,6 +465,8 @@ abstract class SortableAssociations extends Component
      */
     protected function insertSequential(array $sourceArray, $targetKey, int $targetOrder)
     {
+        $this->ensureSequential($sourceArray);
+
         // Append exiting types after position
         if (false === ($indexPosition = array_search($targetKey, array_keys($sourceArray)))) {
             return false;
@@ -498,5 +511,20 @@ abstract class SortableAssociations extends Component
             range($startingSortOrder, count($order)),
             array_keys($order)
         ));
+    }
+
+    /**
+     * @param array $sourceArray
+     */
+    private function ensureSequential(array &$sourceArray)
+    {
+        $ct = 1;
+        foreach($sourceArray as $key => &$sortOrder) {
+            $sortOrder = (int) $sortOrder ?: $ct++;
+
+            if($sortOrder > $ct) {
+                $ct = $sortOrder + 1;
+            }
+        }
     }
 }
