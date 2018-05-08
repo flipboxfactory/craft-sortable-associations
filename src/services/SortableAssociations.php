@@ -265,7 +265,7 @@ abstract class SortableAssociations extends Component
         array $sortOrder
     ) {
 
-        if($record->{static::SORT_ORDER_ATTRIBUTE} !== null) {
+        if ($record->{static::SORT_ORDER_ATTRIBUTE} !== null) {
             return true;
         }
 

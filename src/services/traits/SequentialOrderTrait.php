@@ -105,10 +105,10 @@ trait SequentialOrderTrait
     private function ensureSequential(array &$sourceArray)
     {
         $ct = 1;
-        foreach($sourceArray as $key => &$sortOrder) {
+        foreach ($sourceArray as $key => &$sortOrder) {
             $sortOrder = (int) $sortOrder ?: $ct++;
 
-            if($sortOrder > $ct) {
+            if ($sortOrder > $ct) {
                 $ct = $sortOrder + 1;
             }
         }
